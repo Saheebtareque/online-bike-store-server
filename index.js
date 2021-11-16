@@ -20,6 +20,7 @@ async function run() {
     const database = client.db('online_bike_store');
     const productsCollection = database.collection('products');
     const usersCollection = database.collection('users');
+    const orderedBikes = database.collection("orderedBikes")
 
 
     app.post('/users', async (req, res) => {
@@ -56,6 +57,44 @@ async function run() {
         }
         res.json({ admin: isAdmin });
     })
+
+
+    app.get('/products',async(req,res)=>{
+        console.log('hitting it hard');
+        const cursor = productsCollection.find({});
+        const products = await cursor.toArray();
+        res.send(products);
+
+    });
+  
+      // GET Single Service
+      app.get('/products/:id', async (req, res) => {
+        const id = req.params.id;
+        console.log('getting specific product', id);
+        const query = { _id: ObjectId(id) };
+        const service = await productsCollection.findOne(query);
+        res.json(service);
+    });
+
+     //post api
+     app.post('/products',async(req,res)=>
+     {
+         const productInfo = req.body;
+         console.log('hitting the post',productInfo);
+         const result = await productsCollection.insertOne(productInfo);
+         console.log(result);
+         res.json(result);
+     });
+
+      //post api
+      app.post('/orderedbikes',async(req,res)=>
+      {
+          const bikeInfo = req.body;
+          console.log('hitting the ordered post',bikeInfo);
+          const result = await orderedBikes.insertOne(bikeInfo);
+          console.log(result);
+          res.json(result);
+      });
 
 
     // const database = client.db("insertDB");
