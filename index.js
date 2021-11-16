@@ -108,6 +108,14 @@ async function run() {
       });
 
 
+      app.get('/reviews',async(req,res)=>{
+        console.log('hitting it hard');
+        const cursor = reviews.find({});
+        const products = await cursor.toArray();
+        res.send(products);
+      });
+
+
     // const database = client.db("insertDB");
     // const haiku = database.collection("haiku");
     // create a document to insert
@@ -118,7 +126,7 @@ async function run() {
     // const result = await haiku.insertOne(doc);
 
     // console.log(`A document was inserted with the _id: ${result.insertedId}`);
-  } finally {
+    }finally {
     // await client.close();
   }
 }
