@@ -20,7 +20,8 @@ async function run() {
     const database = client.db('online_bike_store');
     const productsCollection = database.collection('products');
     const usersCollection = database.collection('users');
-    const orderedBikes = database.collection("orderedBikes")
+    const orderedBikes = database.collection("orderedBikes");
+    const reviews = database.collection("reviews");
 
 
     app.post('/users', async (req, res) => {
@@ -92,6 +93,16 @@ async function run() {
           const bikeInfo = req.body;
           console.log('hitting the ordered post',bikeInfo);
           const result = await orderedBikes.insertOne(bikeInfo);
+          console.log(result);
+          res.json(result);
+      });
+
+
+      app.post('/reviews',async(req,res)=>
+      {
+          const review = req.body;
+          console.log('hitting the reviews post',review);
+          const result = await reviews.insertOne(review);
           console.log(result);
           res.json(result);
       });
