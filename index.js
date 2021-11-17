@@ -109,6 +109,17 @@ async function run() {
           res.json(result);
       });
 
+      app.put('/orderedbikes/:id', async (req, res) => {
+        const id = req.params.id;
+        const filter = { _id:(id) };
+        const options = { upsert: true };
+        const updateDoc = { $set: {
+            status:'shipped'
+        } };
+        const result = await orderedBikes.updateOne(filter, updateDoc, options);
+        res.json(result);
+    });
+
       
       app.get('/orderedbikes',async(req,res)=>{
         console.log('hitting the orderedbike get part');
