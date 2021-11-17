@@ -87,6 +87,18 @@ async function run() {
          res.json(result);
      });
 
+
+     app.delete('/products/:id', async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: ObjectId(id) };
+        const result = await productsCollection.deleteOne(query);
+
+        console.log('deleting product with id ', result);
+
+        res.json(result);
+    })
+
+
       //post api
       app.post('/orderedbikes',async(req,res)=>
       {
@@ -96,6 +108,44 @@ async function run() {
           console.log(result);
           res.json(result);
       });
+
+      
+      app.get('/orderedbikes',async(req,res)=>{
+        console.log('hitting the orderedbike get part');
+        const cursor = orderedBikes.find({});
+        const products = await cursor.toArray();
+        res.send(products);
+      });
+
+      app.get('/orderedbikes/:email', async (req, res) => {
+        const email = req.params.email;
+        const query = { email: email };
+        const cursor = orderedBikes.find(query);
+        const result = await cursor.toArray();
+        console.log('loading order of user email', email);
+        
+        res.send(result);
+      });
+
+      
+      app.get('/orderedbikes/:id', async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: ObjectId(id) };
+        const result = await orderedBikes.findOne(query);
+        // console.log('load user with id: ', id);
+        res.send(result);
+    })
+
+      app.delete('/orderedbikes/:id', async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: (id) };
+        const result = await orderedBikes.deleteOne(query);
+
+        console.log('deleting user with id ', result);
+
+        res.json(result);
+    })
+
 
 
       app.post('/reviews',async(req,res)=>
